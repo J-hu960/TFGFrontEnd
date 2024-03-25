@@ -2,10 +2,10 @@ import { useState } from "react"
 import SignUp from "./Sign/SignUp"
 import LogIn from "./Sign/LogIn"
 
-const Auth = () => {
+const Auth = ({navigation}) => {
     const [isNewUser,setIsNewUser]=useState(false)
   return (
-    isNewUser ? <SignUp isNewUser={isNewUser} setIsNewUser={setIsNewUser}  /> : <LogIn isNewUser={isNewUser} setIsNewUser={setIsNewUser} />
+    isNewUser ? <SignUp navigation={navigation} isNewUser={isNewUser} setIsNewUser={setIsNewUser}  /> : <LogIn navigation={navigation} isNewUser={isNewUser} setIsNewUser={setIsNewUser} />
   )
 }
 

@@ -8,7 +8,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const SignUp = ({ className,setIsNewUser,isNewUser }) => {
+const SignUp = ({ className,setIsNewUser,isNewUser,navigation }) => {
 
     const INITIAL_VALUES={
         email:'',
@@ -33,6 +33,7 @@ const SignUp = ({ className,setIsNewUser,isNewUser }) => {
             
             setMessage(`'Usuario  logeado: ${token} ` )
             setSHowMessage(true)
+            navigation.navigate('Main')
         } catch (error) {
             console.log(error)
             setSHowMessage(false)
@@ -66,14 +67,14 @@ const SignUp = ({ className,setIsNewUser,isNewUser }) => {
         
         
           <TouchableOpacity style={styles.button} onPress={handleSubmitForm}>
-             <Text style={styles.registrarse}>Registrarse</Text>
+             <Text style={styles.registrarse}>Iniciar sesión</Text>
           </TouchableOpacity>
         
         <View style={styles.bottomText}>
           <Text style={styles.yaTienesCuenta}>No tienes cuenta?</Text>
           <Text onPress={()=>setIsNewUser(!isNewUser)} style={styles.iniciaSesionAqui}>Regístrate aquí</Text>
         </View>
-        <Pressable>
+        <Pressable onPress={()=>navigation.navigate('ForgotPassword')}>
         <Text style={{color:'red',marginTop:6}}>He olvidado mi contraseña</Text>
         </Pressable>
         {showMessage && <Text style={{marginTop:6,color:'green'}}>{message}</Text>}
@@ -104,6 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 10,
     paddingHorizontal: 20,
+    paddingTop:10,
     width: '80%',
     alignItems: 'center',
     marginTop:-50,
