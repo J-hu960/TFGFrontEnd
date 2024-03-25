@@ -40,8 +40,6 @@ const SignUp = ({ className,setIsNewUser,isNewUser }) => {
         }
 
     }
- 
-    
 
   return (
     <SafeAreaView style={[styles.registrarseAutoLayout, className && { className }]}>

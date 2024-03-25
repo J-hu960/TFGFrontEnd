@@ -35,8 +35,8 @@ export default function App() {
 function MainTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="Home" options={{headerShown:false}} component={Home} />
+      <Tab.Screen name="Profile"  component={Profile} />
       <Tab.Screen name="NewPost" component={NewPost} />
     </Tab.Navigator>
   );
