@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import HomeProject from '../components/HomeProject';
 import useAuthContext from '../hooks/useAuthContext';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import NewPost from './NewPost';
 
 
 
@@ -19,6 +20,7 @@ const Home = ({navigation}) => {
   const [results,setResults]=useState()
   const [titulo,setTitulo]=useState("")
   const [categoria,setCategoria] = useState("")
+  const [isSorting,setIsSorting]=useState(false)
    if(userId)console.log(userId)
    
    const loadUser = async () => {
@@ -47,6 +49,23 @@ const Home = ({navigation}) => {
       
    }
      
+  }
+
+  const loadMasGustados=async()=>{
+    if(isSorting){
+      loadProjects()
+      setIsSorting(false)
+      return
+    }
+    try {
+      const response = await axios.get(`http://192.168.1.35:8004/api/v1/projects?sort=-likes,createdAt`)
+      setResults(response.data.projects)
+      setIsSorting(true)
+      
+   } catch (error) {
+      console.log(error)
+      
+   }
   }
 
 
@@ -85,15 +104,18 @@ const filteredByTitle = titulo !==''?
              <Text>Bienvenido! {userInfo ? userInfo.nombre : 'noUSer'}</Text>
              <Image source={mockavatar} style={{ borderRadius: 25, height: 36, width: 36 }} />
            </View>
-         
+          
         </View>
         <View style={styles.searchQuery}>
            <SearchTextInput text={titulo} setText={setTitulo} />
         </View>
+        <Pressable onPress={loadMasGustados} style={{backgroundColor:'orange', width:'auto', marginLeft:'auto',marginRight:'auto',padding:5,borderRadius:10,marginTop:6,marginBottom:0}}>
+           <Text>{isSorting ? 'Dejar de ordenar': 'Ordenar por los más gustados '}</Text>
+        </Pressable>
           
         {filteredByTitle && filteredByTitle.length>0 ? (
          <>
-           <ScrollView style={{paddingHorizontal:18,marginTop:18}}  >
+           <ScrollView style={{paddingHorizontal:18,marginTop:10}}  >
               {filteredByTitle.map(el=>(
                   <HomeProject key={el._id} project={el} />
               ))}
