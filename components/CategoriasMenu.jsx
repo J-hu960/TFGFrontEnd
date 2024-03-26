@@ -17,7 +17,7 @@ const CategoriasMenu = ({setFilterByCategory}) => {
               paddingTop: 0,
               flexDirection: 'row',
               justifyContent: 'start',
-              marginTop:7
+              marginTop:7,
               
             }}>
             <Menu
@@ -26,11 +26,13 @@ const CategoriasMenu = ({setFilterByCategory}) => {
               onDismiss={closeMenu}
               anchor={ <Icon onPress={openMenu} name="list-ul" size={30} color="black" />
             }>
-              <Menu.Item  onPress={() => {setFilterByCategory("all")}} title="Todos" />
+              <Menu.Item  onPress={() => {setFilterByCategory("")}} title="Todos" />
               <Divider />
               <Menu.Item  onPress={() => {setFilterByCategory("tech")}} title="Tecnologia" />
               <Divider />
               <Menu.Item  onPress={() => {setFilterByCategory("ambiente")}} title="Ecologia" />
+              <Divider />
+              <Menu.Item  onPress={() => {setFilterByCategory("innovacion")}} title="Innovacion" />
               <Divider />
               <Menu.Item  onPress={() => {setFilterByCategory("gaming")}} title="Gaming" />
               <Divider />

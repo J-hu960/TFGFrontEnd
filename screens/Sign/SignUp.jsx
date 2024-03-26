@@ -5,9 +5,11 @@ import Dropdown from 'react-native-input-select';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 import axios from 'axios';
+import useAuthContext from '../../hooks/useAuthContext';
 
 
 const SignUp = ({ className,setIsNewUser,isNewUser }) => {
+  const {setToken}=useAuthContext()
 
     const INITIAL_VALUES={
         nombre:'',
@@ -30,7 +32,7 @@ const SignUp = ({ className,setIsNewUser,isNewUser }) => {
                 passwordConfirm:newUser.passwordConfirm
             })
             const token = (response.data.token)
-            await AsyncStorage.setItem('token',token) 
+            setToken(token) 
 
 
 

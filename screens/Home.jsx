@@ -1,78 +1,127 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Text,Button,View, ScrollView,Image,TextInput } from 'react-native'
+import { Text,Button,View, ScrollView,Image,TextInput, Pressable, FlatList, ActivityIndicator } from 'react-native'
 import { StyleSheet } from 'react-native';
 import icon from '../assets/icon.png'
 import SearchTextInput from '../components/SearchQuery';
 import CategoriasMenu from '../components/CategoriasMenu';
 import mockavatar from '../assets/mockavatar.jpeg'
+import finance from '../assets/finance.jpg'
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import HomeProject from '../components/HomeProject';
+import useAuthContext from '../hooks/useAuthContext';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+
 
 const Home = ({navigation}) => {
+   const {getUsuario,userId,userInfo,setUserInfo} = useAuthContext()
   const [results,setResults]=useState()
-  const [titulo,setTitulo]=useState()
+  const [titulo,setTitulo]=useState("")
+  const [categoria,setCategoria] = useState("")
+   if(userId)console.log(userId)
+   
+   const loadUser = async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+          const response = await axios.get(`http://192.168.1.35:8004/api/v1/usuarios/user`, { headers: {
+            Authorization: `Bearer ${token}`,
+          }},)
+          setUserInfo(response.data);
+        } else {
+               console.log('No esta autorizado')     
+             }
+      } catch (error) {
+        // Manejar errores de la petición
+        console.log(error);
+      }
+    };
   const loadProjects = async()=>{
-    const response = await axios.get('http://192.168.1.35:8004/api/v1/comunidades')
-    setResults(response.data.communities)
+   try {
+      const response = await axios.get(`http://192.168.1.35:8004/api/v1/projects`)
+      setResults(response.data.projects)
+      
+   } catch (error) {
+      console.log(error)
+      
+   }
+     
   }
+
+
   useEffect(()=>{
-     loadProjects()
+      loadProjects()
   },[])
+
+  useEffect(()=>{
+   loadUser(userId)
+  },[])
+
+
+  if(categoria){
+    console.log(categoria)
+    console.log(results)}
+
+
+    
+const filteredByCategory= categoria !==''?
+[...results].filter(el=>el.categoria.includes(categoria))
+ : results
+
+
+const filteredByTitle = titulo !==''?
+    [...filteredByCategory].filter(el=>el.titulo.includes(titulo))
+     : filteredByCategory
+
+
+
+
   return (
      <View style={styles.view}>
         <View style={styles.header}>
-           <CategoriasMenu/>
+           <CategoriasMenu setFilterByCategory={setCategoria}/>
            <View style={{ flexDirection: 'row',width:'60%', alignItems: 'center', justifyContent:'flex-end',gap:5 }}>
-             <Text>Hola Jordi</Text>
+             <Text>Bienvenido! {userInfo ? userInfo.nombre : 'noUSer'}</Text>
              <Image source={mockavatar} style={{ borderRadius: 25, height: 36, width: 36 }} />
            </View>
          
         </View>
         <View style={styles.searchQuery}>
            <SearchTextInput text={titulo} setText={setTitulo} />
-            </View>
-     </View>
+        </View>
+          
+        {filteredByTitle && filteredByTitle.length>0 ? (
+         <>
+           <ScrollView style={{paddingHorizontal:18,marginTop:18}}  >
+              {filteredByTitle.map(el=>(
+                  <HomeProject key={el._id} project={el} />
+              ))}
+           </ScrollView>
+           </>
+
+        ):(
+          <Text style={{marginTop:12,textAlign:'center'}}>{`No hay proyectos disponibles de la categoria '${categoria}' en este momento`}</Text>
+
+        )}
+        
+        </View>
+
+       
   
      //<Button onPress={()=>navigation.navigate('Auth')} title={'Back to login'}></Button >
 
 
 
  );
-    { /**<View>
-        {results && results.length>0 ? (
-           <ScrollView>
-              {results.map(el=>(
-                  <View key={el._id}>
-                  <Text>{el.name}</Text>
-                  </View>
-              ))}
-           </ScrollView>
-
-        ):(<></>
-
-        )}
-     </View> <View style={styles.searchQueryContainer}> search query
-       <View style={styles.searchBox}>
-         <Image
-           source={icon}
-           style={styles.searchIcon}
-         />
-         <TextInput
-           style={styles.searchInput}
-           placeholder="Buscar..."
-           placeholderTextColor="#757575"
-         />
-       </View>
-     </View>*/}
-    
-  
 }
 
 export default Home
 
+
 const styles = StyleSheet.create({
    view:{
-      height:'100',
-      width:'100%',
+      flex:1,
       padding:10,
       paddingTop:60
 
@@ -83,7 +132,8 @@ const styles = StyleSheet.create({
       width:'100%',
       height:40,
       alignItems:'center',
-      justifyContent:'space-between'
+      justifyContent:'space-between',
+      zIndex:50,
 
    },
    searchQuery:{
@@ -127,6 +177,15 @@ const styles = StyleSheet.create({
      top: 10, // Ajustado para centrar verticalmente
      overflow: 'visible',
    },
+   project:{
+       height:'75%',
+       marginTop:12,
+       display:'flex',
+       flexDirection:'column',
+       padding:0,
+       margin:0,
+       width:'100%'
+   }
  
  });
  

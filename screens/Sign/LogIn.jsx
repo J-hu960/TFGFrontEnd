@@ -6,10 +6,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useAuthContext from '../../hooks/useAuthContext';
 
 
-const SignUp = ({ className,setIsNewUser,isNewUser,navigation }) => {
-
+const LogIn = ({ className,setIsNewUser,isNewUser,navigation }) => {
+      const {setAuthToken,setUserId,loadUser} = useAuthContext()
     const INITIAL_VALUES={
         email:'',
         password:'',
@@ -24,15 +25,15 @@ const SignUp = ({ className,setIsNewUser,isNewUser,navigation }) => {
     const handleSubmitForm=async()=>{ //aquesta funcio s'ha dencargar de fer la peticio POST per a crear un nou usuari amb la info que tenim a newUser
         try {
             const response = await axios.post('http://192.168.1.35:8004/api/v1/usuarios/login',{
-
                 email:user.email,
                 password:user.password,
             })
             const token = (response.data.token)
+            await setAuthToken(token)
             await AsyncStorage.setItem('token',token) // persistir el token para la sesión
-            
-            setMessage(`'Usuario  logeado: ${token} ` )
+             setMessage(`'Usuario  logeado: ${token} ` )
             setSHowMessage(true)
+            setUserId(response.data.user)
             navigation.navigate('Main')
         } catch (error) {
             console.log(error)
@@ -194,4 +195,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default LogIn;
