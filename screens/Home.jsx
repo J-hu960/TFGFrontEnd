@@ -21,6 +21,7 @@ const Home = ({navigation}) => {
   const [titulo,setTitulo]=useState("")
   const [categoria,setCategoria] = useState("")
   const [isSorting,setIsSorting]=useState(false)
+
    if(userId)console.log(userId)
    
    const loadUser = async () => {
@@ -68,14 +69,16 @@ const Home = ({navigation}) => {
    }
   }
 
-
   useEffect(()=>{
       loadProjects()
+
   },[])
 
   useEffect(()=>{
    loadUser(userId)
   },[])
+
+  
 
 
   if(categoria){
@@ -97,11 +100,11 @@ const filteredByTitle = titulo !==''?
 
 
   return (
-     <View style={styles.view}>
+   <View style={styles.view}>
         <View style={styles.header}>
            <CategoriasMenu setFilterByCategory={setCategoria}/>
            <View style={{ flexDirection: 'row',width:'60%', alignItems: 'center', justifyContent:'flex-end',gap:5 }}>
-             <Text>Bienvenido! {userInfo ? userInfo.nombre : 'noUSer'}</Text>
+             <Text>Bienvenido! </Text>
              <Image source={mockavatar} style={{ borderRadius: 25, height: 36, width: 36 }} />
            </View>
           
@@ -109,23 +112,26 @@ const filteredByTitle = titulo !==''?
         <View style={styles.searchQuery}>
            <SearchTextInput text={titulo} setText={setTitulo} />
         </View>
-        <Pressable onPress={loadMasGustados} style={{backgroundColor:'orange', width:'auto', marginLeft:'auto',marginRight:'auto',padding:5,borderRadius:10,marginTop:6,marginBottom:0}}>
+        <Pressable onPress={loadMasGustados} style={{backgroundColor:'orange', width:'auto', marginLeft:'auto',marginRight:'auto',padding:5,borderRadius:10,marginTop:6,marginVertical:5}}>
            <Text>{isSorting ? 'Dejar de ordenar': 'Ordenar por los más gustados '}</Text>
         </Pressable>
           
-        {filteredByTitle && filteredByTitle.length>0 ? (
-         <>
-           <ScrollView style={{paddingHorizontal:18,marginTop:10}}  >
-              {filteredByTitle.map(el=>(
-                  <HomeProject key={el._id} project={el} />
-              ))}
-           </ScrollView>
-           </>
+       {
+        filteredByTitle && filteredByTitle.length>0 ? (
+          <>
+            <ScrollView >
+               {filteredByTitle.map(el=>(
+                   <HomeProject key={el._id} project={el} />
+               ))}
+            </ScrollView>
+            </>
+ 
+         ):(
+           <Text style={{marginTop:12,textAlign:'center'}}>{`No hay proyectos disponibles de la categoria '${categoria}' en este momento`}</Text>
+ 
+         )
 
-        ):(
-          <Text style={{marginTop:12,textAlign:'center'}}>{`No hay proyectos disponibles de la categoria '${categoria}' en este momento`}</Text>
-
-        )}
+       }
         
         </View>
 

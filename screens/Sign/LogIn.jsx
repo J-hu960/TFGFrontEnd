@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, Button, Pressable, TextInput, SafeAreaView, TouchableOpacity } from 'react-native';
 import crowdFunding from '../../assets/crowdFunding.webp'
 import Dropdown from 'react-native-input-select';
@@ -28,12 +28,10 @@ const LogIn = ({ className,setIsNewUser,isNewUser,navigation }) => {
                 email:user.email,
                 password:user.password,
             })
-            const token = (response.data.token)
-            await setAuthToken(token)
+            const token = await (response.data.token)
             await AsyncStorage.setItem('token',token) // persistir el token para la sesión
-             setMessage(`'Usuario  logeado: ${token} ` )
-            setSHowMessage(true)
-            setUserId(response.data.user)
+            await setUserId(response.data.user)
+            await setAuthToken()
             navigation.navigate('Main')
         } catch (error) {
             console.log(error)
@@ -42,7 +40,7 @@ const LogIn = ({ className,setIsNewUser,isNewUser,navigation }) => {
         }
 
     }
- 
+    
   return (
     <SafeAreaView style={[styles.registrarseAutoLayout, className && { className }]}>
       <View style={styles.imageFrame}>
@@ -78,7 +76,6 @@ const LogIn = ({ className,setIsNewUser,isNewUser,navigation }) => {
         <Pressable onPress={()=>navigation.navigate('ForgotPassword')}>
         <Text style={{color:'red',marginTop:6}}>He olvidado mi contraseña</Text>
         </Pressable>
-        {showMessage && <Text style={{marginTop:6,color:'green'}}>{message}</Text>}
       </View>
     </SafeAreaView>
   );

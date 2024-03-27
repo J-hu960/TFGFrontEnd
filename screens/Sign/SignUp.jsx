@@ -6,10 +6,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 import axios from 'axios';
 import useAuthContext from '../../hooks/useAuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const SignUp = ({ className,setIsNewUser,isNewUser }) => {
-  const {setToken}=useAuthContext()
+
+const SignUp = ({ className,setIsNewUser,isNewUser,navigation }) => {
+  const {setToken,setAuthToken,setUserId}=useAuthContext()
 
     const INITIAL_VALUES={
         nombre:'',
@@ -33,6 +35,11 @@ const SignUp = ({ className,setIsNewUser,isNewUser }) => {
             })
             const token = (response.data.token)
             setToken(token) 
+            await setAuthToken(token)
+            await AsyncStorage.setItem('token',token) // persistir el token para la sesión
+
+            setUserId(response.data.user)
+            navigation.navigate('Main')
 
 
 
@@ -73,9 +80,7 @@ const SignUp = ({ className,setIsNewUser,isNewUser }) => {
         <View style={styles.inputContainer}>
           <View style={styles.inputWrapper}>
             <TextInput  secureTextEntry={secureText} value={newUser.passwordConfirm} placeholder='Confirm password' onChangeText={text=>setNewUser({...newUser,passwordConfirm:text})}   style={styles.label}></TextInput>
-            <Pressable onPress={()=>setSecureText(!secureText)}>
-              <Text>{secureText ? 'Ver contraseña' :'Ocultar'}</Text>
-            </Pressable>
+           
           </View>
         </View>
         <Dropdown

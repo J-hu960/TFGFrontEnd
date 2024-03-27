@@ -7,14 +7,17 @@ const authContext = createContext();
 const AuthProvider = ({ children }) => {
    const [userId,setUserId] = useState()
    const [userInfo,setUserInfo] = useState()
+   const [token,setToken] = useState()
 
    const setAuthToken = async () => {
-    const token = await AsyncStorage.getItem('token');
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    const tokenStrorage = await AsyncStorage.getItem('token');
+    if (tokenStrorage) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${tokenStrorage}`;
+      setToken(token)
     } else {
       delete axios.defaults.headers.common['Authorization'];
     }
+
   };
   
   return (
@@ -23,7 +26,9 @@ const AuthProvider = ({ children }) => {
         setUserId,
         userId,
         userInfo,
-        setUserInfo
+        setUserInfo,
+        token,
+        setToken
         }}>
       {children}
     </authContext.Provider>
