@@ -8,6 +8,7 @@ const AuthProvider = ({ children }) => {
    const [userId,setUserId] = useState()
    const [userInfo,setUserInfo] = useState()
    const [token,setToken] = useState()
+   const [idProject,setIdProject]=useState('')
 
    const setAuthToken = async () => {
     const tokenStrorage = await AsyncStorage.getItem('token');
@@ -28,7 +29,9 @@ const AuthProvider = ({ children }) => {
         userInfo,
         setUserInfo,
         token,
-        setToken
+        setToken,
+        idProject,
+        setIdProject
         }}>
       {children}
     </authContext.Provider>

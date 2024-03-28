@@ -15,7 +15,7 @@ import NewPost from './NewPost';
 import EditableProject from '../components/EditableProject';
 
 const MyProjects = ({navigation}) => {
-    const {getUsuario,userId,userInfo,setUserInfo} = useAuthContext()
+    const {getUsuario,userId,userInfo,setUserInfo,setIsnewProject} = useAuthContext()
     const [results,setResults]=useState()
     const [titulo,setTitulo]=useState("")
 
@@ -40,11 +40,10 @@ const MyProjects = ({navigation}) => {
     [...results].filter(el=>el.titulo.includes(titulo))
      : results
 
+   
+
 
     
-  
-
-
   return (
     <View style={styles.view}>
         <View style={styles.header}>
@@ -61,7 +60,7 @@ const MyProjects = ({navigation}) => {
           <>
             <ScrollView style={{marginTop:24}}>
                {filteredByTitle.map(el=>(
-                   <EditableProject key={el._id} project={el} />
+                   <EditableProject navigation={navigation} key={el._id} project={el} />
                ))}
             </ScrollView>
             </>
@@ -70,12 +69,8 @@ const MyProjects = ({navigation}) => {
            <Text style={{marginTop:12,textAlign:'center'}}>{`No hay proyectos relacionados con este usuario`}</Text>
  
          )
-
-       }
+      }
        
-          
-    
-        
         </View>
   )
 }

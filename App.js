@@ -42,8 +42,8 @@ function MainTabs() {
     <Tab.Navigator>
       <Tab.Screen name="Home" options={{headerShown:false}} component={Home} />
       <Tab.Screen name="MyProjects" options={{headerShown:false}} component={MyProjects} />
+      <Tab.Screen name="NewPost" options={{headerShown:false}} component={NewPost} />
       <Tab.Screen name="Profile" options={{ headerShown: false }}  component={Profile} />
-      <Tab.Screen name="NewPost" component={NewPost} />
     </Tab.Navigator>
   );
 }
