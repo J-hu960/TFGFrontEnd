@@ -8,9 +8,16 @@ const CategoriasMenu = ({setFilterByCategory}) => {
     const openMenu = () => setShowMenu(true);
   
     const closeMenu = () => setShowMenu(false);
-  
-  //<Button  onPress={openMenu}>Filtra por categoria</Button>
-    return ( 
+
+    const handleSetcategoria=(text)=>{
+      setFilterByCategory(text)
+      setTimeout(()=>{
+        closeMenu()
+
+
+      },100)
+    }
+      return ( 
         <PaperProvider>
           <View
             style={{
@@ -26,21 +33,21 @@ const CategoriasMenu = ({setFilterByCategory}) => {
               onDismiss={closeMenu}
               anchor={ <Icon onPress={openMenu} name="list-ul" size={30} color="black" />
             }>
-              <Menu.Item  onPress={() => {setFilterByCategory("")}} title="Todos" />
+              <Menu.Item  onPress={() => {handleSetcategoria("")}} title="Todos" />
               <Divider />
-              <Menu.Item  onPress={() => {setFilterByCategory("tech")}} title="Tecnologia" />
+              <Menu.Item  onPress={() => {handleSetcategoria("tech")}} title="Tecnologia" />
               <Divider />
-              <Menu.Item  onPress={() => {setFilterByCategory("ambiente")}} title="Ecologia" />
+              <Menu.Item  onPress={() => {handleSetcategoria("ambiente")}} title="Ecologia" />
               <Divider />
-              <Menu.Item  onPress={() => {setFilterByCategory("innovacion")}} title="Innovacion" />
+              <Menu.Item  onPress={() => {handleSetcategoria("innovacion")}} title="Innovacion" />
               <Divider />
-              <Menu.Item  onPress={() => {setFilterByCategory("gaming")}} title="Gaming" />
+              <Menu.Item  onPress={() => {handleSetcategoria("gaming")}} title="Gaming" />
               <Divider />
-              <Menu.Item  onPress={() => {setFilterByCategory("edu")}} title="Educacion" />
+              <Menu.Item  onPress={() => {handleSetcategoria("edu")}} title="Educacion" />
               <Divider />
-              <Menu.Item  onPress={() => {setFilterByCategory("social")}} title="Social" />
+              <Menu.Item  onPress={() => {handleSetcategoria("social")}} title="Social" />
               <Divider />
-              <Menu.Item  onPress={() => {setFilterByCategory("otros")}} title="Otros" />
+              <Menu.Item  onPress={() => {handleSetcategoria("otros")}} title="Otros" />
              
             </Menu>
           </View>
