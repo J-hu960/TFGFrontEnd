@@ -6,7 +6,7 @@ import useProjectsContext from "../hooks/useProjectsContext"
 
 const EditableProject = ({project,navigation}) => {
    const {setIdProject} = useAuthContext()
-   const {loadMyProjects} = useProjectsContext()
+   const {loadMyProjects,loadProjects} = useProjectsContext()
    const handleEditButton=()=>{
       setIdProject(project._id)
       navigation.navigate('NewPost',{editingProject:project})

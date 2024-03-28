@@ -32,10 +32,10 @@ const NewPost = ({ navigation, route }) => {
   const [newProject, setNewProject] = useState(INITIAL_VALUES)
 
   const handleInputChange = (key, value) => {
-    setNewProject(prevState => ({
-      ...prevState,
+    setNewProject({
+      ...newProject,
       [key]: value
-    }));
+    });
   }
 
   const handleCreateProject = async () => {

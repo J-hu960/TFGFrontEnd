@@ -33,6 +33,7 @@ const Home = ({navigation}) => {
   },[])
 
 
+
     
 const filteredByCategory= categoria !==''?
 [...homeProjects].filter(el=>el.categoria.includes(categoria))
@@ -68,7 +69,7 @@ const filteredByTitle = titulo !==''?
           <>
             <ScrollView >
                {filteredByTitle.map(el=>(
-                   <HomeProject key={el._id} project={el} />
+                   <HomeProject userInfo={userInfo} navigation={navigation} key={el._id} project={el} />
                ))}
             </ScrollView>
             </>
