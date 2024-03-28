@@ -12,63 +12,17 @@ import HomeProject from '../components/HomeProject';
 import useAuthContext from '../hooks/useAuthContext';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NewPost from './NewPost';
+import useProjectsContext from '../hooks/useProjectsContext';
 
 
 
 const Home = ({navigation}) => {
-   const {getUsuario,userId,userInfo,setUserInfo} = useAuthContext()
-  const [results,setResults]=useState()
+   const {getUsuario,userId,userInfo,setUserInfo,loadUser} = useAuthContext()
+   const { homeProjects,setHomeProjects,loadProjects,loadMasGustados,isSorting,setIsSorting} = useProjectsContext()
   const [titulo,setTitulo]=useState("")
   const [categoria,setCategoria] = useState("")
-  const [isSorting,setIsSorting]=useState(false)
 
-   if(userId)console.log(userId)
    
-   const loadUser = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
-        if (token) {
-          const response = await axios.get(`http://192.168.1.35:8004/api/v1/usuarios/user`, { headers: {
-            Authorization: `Bearer ${token}`,
-          }},)
-          setUserInfo(response.data);
-        } else {
-               console.log('No esta autorizado')     
-             }
-      } catch (error) {
-        // Manejar errores de la petición
-        console.log(error);
-      }
-    };
-  const loadProjects = async()=>{
-   try {
-      const response = await axios.get(`http://192.168.1.35:8004/api/v1/projects`)
-      setResults(response.data.projects)
-      
-   } catch (error) {
-      console.log(error)
-      
-   }
-     
-  }
-
-  const loadMasGustados=async()=>{
-    if(isSorting){
-      loadProjects()
-      setIsSorting(false)
-      return
-    }
-    try {
-      const response = await axios.get(`http://192.168.1.35:8004/api/v1/projects?sort=-likes,createdAt`)
-      setResults(response.data.projects)
-      setIsSorting(true)
-      
-   } catch (error) {
-      console.log(error)
-      
-   }
-  }
-
   useEffect(()=>{
       loadProjects()
 
@@ -78,18 +32,11 @@ const Home = ({navigation}) => {
    loadUser(userId)
   },[])
 
-  
-
-
-  if(categoria){
-    console.log(categoria)
-    console.log(results)}
-
 
     
 const filteredByCategory= categoria !==''?
-[...results].filter(el=>el.categoria.includes(categoria))
- : results
+[...homeProjects].filter(el=>el.categoria.includes(categoria))
+ : homeProjects
 
 
 const filteredByTitle = titulo !==''?

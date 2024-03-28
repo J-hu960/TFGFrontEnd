@@ -20,6 +20,23 @@ const AuthProvider = ({ children }) => {
     }
 
   };
+  const loadUser = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        const response = await axios.get(`http://192.168.1.35:8004/api/v1/usuarios/user`, { headers: {
+          Authorization: `Bearer ${token}`,
+        }},)
+        setUserInfo(response.data);
+      } else {
+             console.log('No esta autorizado')     
+           }
+    } catch (error) {
+      // Manejar errores de la petición
+      console.log(error);
+    }
+  };
+
   
   return (
     <authContext.Provider value={{
@@ -31,7 +48,8 @@ const AuthProvider = ({ children }) => {
         token,
         setToken,
         idProject,
-        setIdProject
+        setIdProject,
+        loadUser
         }}>
       {children}
     </authContext.Provider>

@@ -14,6 +14,7 @@ import ResetPassword from './screens/Sign/ResetPassword';
 import DeleteAccount from './screens/DeleteAccount';
 import UpdatePassword from './screens/UpdatePassword';
 import MyProjects from './screens/MyProjects';
+import ProjectsProvider from './context/ProjectsContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -23,6 +24,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <AuthProvider>
+    <ProjectsProvider>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
@@ -33,6 +35,7 @@ export default function App() {
           <Stack.Screen name="Main" component={MainTabs} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
+      </ProjectsProvider>
     </AuthProvider>
   );
 }

@@ -2,17 +2,21 @@ import { View,Text,Image, Pressable } from "react-native"
 import finance from '../assets/finance.jpg'
 import useAuthContext from "../hooks/useAuthContext"
 import axios from "axios"
+import useProjectsContext from "../hooks/useProjectsContext"
 
 const EditableProject = ({project,navigation}) => {
    const {setIdProject} = useAuthContext()
+   const {loadMyProjects} = useProjectsContext()
    const handleEditButton=()=>{
       setIdProject(project._id)
       navigation.navigate('NewPost',{editingProject:project})
      }
 
-   const handleDeleteButton=async()=>{
+     const handleDeleteButton=async()=>{
       try {
          await axios.delete(`http://192.168.1.35:8004/api/v1/projects/${project._id}`)
+         await loadMyProjects()
+         await loadProjects()
          console.log('proyecto borrado con exito')
       } catch (error) {
          console.log(error)
@@ -20,6 +24,8 @@ const EditableProject = ({project,navigation}) => {
       }
      
    }
+
+ 
 
   return (
     <View style={{width:'100%',height:150,display:'flex',flexDirection:'column',padding:5,alignItems:'center',backgroundColor:'white'}}>

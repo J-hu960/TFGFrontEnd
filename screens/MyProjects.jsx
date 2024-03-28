@@ -13,32 +13,24 @@ import useAuthContext from '../hooks/useAuthContext';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NewPost from './NewPost';
 import EditableProject from '../components/EditableProject';
+import useProjectsContext from '../hooks/useProjectsContext';
 
 const MyProjects = ({navigation}) => {
     const {getUsuario,userId,userInfo,setUserInfo,setIsnewProject} = useAuthContext()
+    const {myProjects,setMyProjects,loadMyProjects} = useProjectsContext()
     const [results,setResults]=useState()
     const [titulo,setTitulo]=useState("")
 
-    const loadProjects = async()=>{
-        try {
-           const response = await axios.get(`http://192.168.1.35:8004/api/v1/projects/MyProjects`,)
-           setResults(response.data.projects)
-           
-        } catch (error) {
-           console.log(error)
-           
-        }
-          
-       }
+  
 
      useEffect(()=>{
-        loadProjects()
+        loadMyProjects()
   
      },[])
 
      const filteredByTitle = titulo !==''?
-    [...results].filter(el=>el.titulo.includes(titulo))
-     : results
+    [...myProjects].filter(el=>el.titulo.includes(titulo))
+     : myProjects
 
    
 
