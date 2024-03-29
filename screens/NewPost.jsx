@@ -20,12 +20,13 @@ const NewPost = ({ navigation, route }) => {
       recaudacionEsperada: undefined,
       categoria: '',
       recaudacionRecibida: 0,
-      autor: userInfo.email,
+      autor: userInfo.nombre,
       createdAt: undefined,
       likes: 0,
       dislikes: 0,
       fechaLimite: undefined,
-      linkWeb: ''
+      linkWeb: '',
+      createdBy:userInfo._id
     }
   }
 

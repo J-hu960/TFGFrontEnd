@@ -13,15 +13,18 @@ import useAuthContext from '../hooks/useAuthContext';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import NewPost from './NewPost';
 import useProjectsContext from '../hooks/useProjectsContext';
+import defaultavatar from '../assets/defaultavatar.jpg'
+
+
 
 
 
 const Home = ({navigation}) => {
-   const {getUsuario,userId,userInfo,setUserInfo,loadUser} = useAuthContext()
+   const {getUsuario,userId,userInfo,setUserInfo,loadUser,token} = useAuthContext()
    const { homeProjects,setHomeProjects,loadProjects,loadMasGustados,isSorting,setIsSorting} = useProjectsContext()
   const [titulo,setTitulo]=useState("")
   const [categoria,setCategoria] = useState("")
-
+ 
    
   useEffect(()=>{
       loadProjects()
@@ -29,7 +32,7 @@ const Home = ({navigation}) => {
   },[])
 
   useEffect(()=>{
-   loadUser(userId)
+   loadUser()
   },[])
 
 
@@ -53,7 +56,7 @@ const filteredByTitle = titulo !==''?
            <CategoriasMenu setFilterByCategory={setCategoria}/>
            <View style={{ flexDirection: 'row',width:'60%', alignItems: 'center', justifyContent:'flex-end',gap:5 }}>
              <Text>Bienvenido! </Text>
-             <Image source={mockavatar} style={{ borderRadius: 25, height: 36, width: 36 }} />
+             <Image source={mockavatar} style={{ borderRadius: 25, height: 50, width: 50}} />
            </View>
           
         </View>

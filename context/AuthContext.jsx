@@ -14,7 +14,7 @@ const AuthProvider = ({ children }) => {
     const tokenStrorage = await AsyncStorage.getItem('token');
     if (tokenStrorage) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${tokenStrorage}`;
-      setToken(token)
+      setToken(tokenStrorage)
     } else {
       delete axios.defaults.headers.common['Authorization'];
     }
