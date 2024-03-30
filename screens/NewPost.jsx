@@ -5,6 +5,9 @@ import Dropdown from 'react-native-input-select';
 import axios from 'axios';
 import useProjectsContext from '../hooks/useProjectsContext';
 
+
+
+
 const NewPost = ({ navigation, route }) => {
   const { userInfo } = useAuthContext()
   const { loadMyProjects, loadProjects } = useProjectsContext()

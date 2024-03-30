@@ -25,7 +25,6 @@ const Home = ({navigation}) => {
   const [titulo,setTitulo]=useState("")
   const [categoria,setCategoria] = useState("")
  
-   
   useEffect(()=>{
       loadProjects()
 

@@ -60,7 +60,7 @@ const HomeProject = ({ project,navigation,userInfo }) => {
     <View style={styles.project}>
       <View style={{ display: 'flex', flexDirection: 'row', height: 34, width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
         <Text style={{ fontSize: 16, fontWeight: '100' }}>{project.categoria}</Text>
-        <Text style={{ fontSize: 16, fontWeight: '100' }}>{project.autor}</Text>
+        <Text style={{ fontSize: 16, fontWeight: '100' }}>{project.createdBy?.nombre}</Text>
       </View>
       <Text style={{ textAlign: 'center', fontSize: 24, fontWeight: 'bold', textDecorationLine: 'underline' }}>{project.titulo}</Text>
       <View style={{ width: '100%', height: 'auto', marginTop: 12 }}>
