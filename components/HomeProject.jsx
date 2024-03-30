@@ -10,6 +10,7 @@ const HomeProject = ({ project,navigation,userInfo }) => {
   const [hasDisliked, setHasDisliked] = useState(false);
   const [likes, setLikes] = useState(project.likes);
   const [dislikes, setDislikes] = useState(project.dislikes);
+  if(userInfo)console.log(userInfo)
   
 
   const handleLikeButton = async () => {
@@ -32,6 +33,15 @@ const HomeProject = ({ project,navigation,userInfo }) => {
     }
   };
 
+  //Volem veure si el project._id esta dins l'array de proyectosLikeados de l'usuari
+  const hasliked=()=>{
+    setHasLiked(userInfo.proyectosLikeados.includes(project._id))
+  }
+   //Volem veure si el project._id esta dins l'array de proyectosLikeados de l'usuari
+   const hasdisliked=()=>{
+     setHasDisliked(userInfo.proyectosDislikeados.includes(project._id))
+  }
+
   const handleDislikeButton = async () => {
     if (hasDisliked) return;
     try {
@@ -39,9 +49,8 @@ const HomeProject = ({ project,navigation,userInfo }) => {
          data:{
           dislikes: dislikes + 1,
           email:userInfo.email
-       }
-        
-        });
+       }});
+      
       setDislikes(dislikes + 1);
       setHasDisliked(true);
       if (hasLiked) {
