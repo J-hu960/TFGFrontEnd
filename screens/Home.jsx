@@ -7,7 +7,7 @@ import SearchTextInput from '../components/SearchQuery';
 import CategoriasMenu from '../components/CategoriasMenu';
 import mockavatar from '../assets/mockavatar.jpeg'
 import finance from '../assets/finance.jpg'
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import HomeProject from '../components/HomeProject';
 import useAuthContext from '../hooks/useAuthContext';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,32 +21,28 @@ import defaultavatar from '../assets/defaultavatar.jpg'
 
 const Home = ({navigation}) => {
    const {getUsuario,userId,userInfo,setUserInfo,loadUser,token} = useAuthContext()
-   const { homeProjects,setHomeProjects,loadProjects,loadMasGustados,isSorting,setIsSorting} = useProjectsContext()
-  const [titulo,setTitulo]=useState("")
-  const [categoria,setCategoria] = useState("")
- 
-  useEffect(()=>{
-      loadProjects()
+   const { homeProjects,setHomeProjects,loadProjects,isSorting,setIsSorting,setPage,page,categoria,setCategoria,titulo,setTitulo} = useProjectsContext()
+   const [orderPopulares,setOrdenarPopulares]=useState(false)
 
-  },[])
+
+  useEffect(()=>{
+     loadProjects()
+
+  },[page,categoria])
 
   useEffect(()=>{
    loadUser()
   },[])
 
 
-
+     const handleVerMas=()=>{
     
-const filteredByCategory= categoria !==''?
-[...homeProjects].filter(el=>el.categoria.includes(categoria))
- : homeProjects
-
-
-const filteredByTitle = titulo !==''?
-    [...filteredByCategory].filter(el=>el.titulo.includes(titulo))
-     : filteredByCategory
-
-
+      setPage(prevPage=>prevPage+1)
+     }
+     const handleVerMenos=()=>{
+      if(page<=1)return
+      setPage(prevPage=>prevPage-1)
+     }
 
 
   return (
@@ -60,28 +56,36 @@ const filteredByTitle = titulo !==''?
           
         </View>
         <View style={styles.searchQuery}>
-           <SearchTextInput text={titulo} setText={setTitulo} />
+           <SearchTextInput  text={titulo} setText={setTitulo} />
         </View>
-        <Pressable onPress={loadMasGustados} style={{backgroundColor:'orange', width:'auto', marginLeft:'auto',marginRight:'auto',padding:5,borderRadius:10,marginTop:6,marginVertical:5}}>
-           <Text>{isSorting ? 'Dejar de ordenar': 'Ordenar por los más gustados '}</Text>
-        </Pressable>
+    
           
        {
-        filteredByTitle && filteredByTitle.length>0 ? (
+        homeProjects && homeProjects.length>0 ? (
           <>
             <ScrollView >
-               {filteredByTitle.map(el=>(
+               {homeProjects.map(el=>(
                    <HomeProject userInfo={userInfo} navigation={navigation} key={el._id} project={el} />
                ))}
             </ScrollView>
+            <View  style={{display:'flex',flexDirection:'row-reverse',gap:30,alignItems:'center',justifyContent:'center',width:'100%',marginLeft:'auto',marginRight:'auto',padding:0,height:30,borderRadius:10}}>
+                <Icon onPress={handleVerMas} name="caret-right" size={40} color="blue" />       
+                <Icon onPress={handleVerMenos} name="caret-left" size={40} color="blue" />            
+     
+               </View>
             </>
  
          ):(
-           <Text style={{marginTop:12,textAlign:'center'}}>{`No hay proyectos disponibles de la categoria '${categoria}' en este momento`}</Text>
+            <>
+               <Text style={{marginTop:12,textAlign:'center'}}>{`No hay proyectos disponibles de la categoria '${categoria}' en este momento`}</Text>
+                <Button onPress={handleVerMenos} title='Volver atrás'></Button>
+            </>
  
          )
 
        }
+
+
         
         </View>
 
@@ -118,7 +122,7 @@ const styles = StyleSheet.create({
       width:'70%',
       marginTop:20,
       marginLeft:'auto',
-      marginRight:'auto'
+      marginRight:'auto',
    },
 
    searchQueryContainer: {

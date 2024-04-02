@@ -8,6 +8,7 @@ const SearchTextInput = ({text,setText}) => {
     style={{backgroundColor:'white'}}
     onChangeText={(text)=>{setText(text)}}
     value={text}
+    mode='bar'
   />
   );
 };
