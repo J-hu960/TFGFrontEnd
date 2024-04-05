@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import finance from '../assets/finance.jpg';
 import { Text, Button, View, Image, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -6,61 +6,183 @@ import { StyleSheet } from 'react-native';
 import axios from 'axios';
 
 const HomeProject = ({ project,navigation,userInfo }) => {
-  const [hasLiked, setHasLiked] = useState(false);
-  const [hasDisliked, setHasDisliked] = useState(false);
   const [likes, setLikes] = useState(project.likes);
   const [dislikes, setDislikes] = useState(project.dislikes);
-  if(userInfo)console.log(userInfo)
-  
+  const [hasLikedYet,setHasLikedYet] =useState()
+  const [hasDislikedYet,setHasDislikedYet] =useState()
+
+
+  useEffect(() => {
+    if(userInfo){
+      setHasLikedYet(userInfo.proyectosLikeados.includes(project._id));
+      setHasDislikedYet(userInfo.proyectosDislikeados.includes(project._id));
+
+    }
+   
+
+  }, [userInfo, project]);
 
   const handleLikeButton = async () => {
-    if (hasLiked) return;
-    try {
-      await axios.patch(`http://192.168.1.35:8004/api/v1/projects/${project._id}/likes`, { 
-        data:{
-          likes: likes + 1,
-          email:userInfo.email
-        }
-      });
-      setLikes(likes + 1);
-      setHasLiked(true);
-      if (hasDisliked) {
-        setDislikes(dislikes - 1);
-        setHasDisliked(false);
+
+    if (!hasLikedYet){
+      console.log('+1')
+      try {
+        await axios.patch(`http://192.168.1.35:8004/api/v1/projects/${project._id}/likes`,{
+          data:{
+            likes:likes+1,
+            action:'like'
+          }
+        });
+
+        await axios.patch('http://192.168.1.35:8004/api/v1/usuarios/updateMyLikes',{
+          data:{
+            proyectoLikeado:project._id,
+            action:'like'
+          }
+        })
+        setHasLikedYet(true)
+        setLikes(prev=>prev+1);
+        
+      } catch (error) {
+        console.error("Error updating likes:", error);
       }
-    } catch (error) {
-      console.error("Error updating likes:", error);
+    }else{
+      try {
+        await axios.patch(`http://192.168.1.35:8004/api/v1/projects/${project._id}/likes`,{
+          data:{
+            likes:likes-1,
+            action:'unlike'
+          }
+        });
+
+        await axios.patch('http://192.168.1.35:8004/api/v1/usuarios/updateMyLikes',{
+          data:{
+            proyectoLikeado:project._id,
+            action:'unlike'
+          }
+        })
+        setLikes(prev=>prev-1);
+        setHasLikedYet(false)
+
+        console.log('-1')
+        
+      } catch (error) {
+        console.error("Error updating likes:", error);
+      }
+ 
     }
+
+    if(hasDislikedYet){
+      try {
+        await axios.patch(`http://192.168.1.35:8004/api/v1/projects/${project._id}/dislikes`,{
+          data:{
+            dislikes:dislikes-1,
+            action:'undislike'
+          }
+        });
+
+        await axios.patch('http://192.168.1.35:8004/api/v1/usuarios/updateMyDislikes',{
+          data:{
+            proyectoDilikeado:project._id,
+            action:'undislike'
+          }
+        })
+        setDislikes(prev=>prev-1);
+        setHasDislikedYet(false)
+
+        console.log('-1')
+        
+      } catch (error) {
+        console.error("Error updating likes:", error);
+      }
+
+    }
+
+   
   };
-
-  //Volem veure si el project._id esta dins l'array de proyectosLikeados de l'usuari
-  const hasliked=()=>{
-    setHasLiked(userInfo.proyectosLikeados.includes(project._id))
-  }
-   //Volem veure si el project._id esta dins l'array de proyectosLikeados de l'usuari
-   const hasdisliked=()=>{
-     setHasDisliked(userInfo.proyectosDislikeados.includes(project._id))
-  }
-
   const handleDislikeButton = async () => {
-    if (hasDisliked) return;
-    try {
-      await axios.patch(`http://192.168.1.35:8004/api/v1/projects/${project._id}/dislikes`, {
-         data:{
-          dislikes: dislikes + 1,
-          email:userInfo.email
-       }});
-      
-      setDislikes(dislikes + 1);
-      setHasDisliked(true);
-      if (hasLiked) {
-        setLikes(likes - 1);
-        setHasLiked(false);
+
+    if (!hasDislikedYet){
+      console.log('+1')
+      try {
+        await axios.patch(`http://192.168.1.35:8004/api/v1/projects/${project._id}/dislikes`,{
+          data:{
+            dislikes:dislikes+1,
+            action:'dislike'
+          }
+        });
+
+        await axios.patch('http://192.168.1.35:8004/api/v1/usuarios/updateMyDislikes',{
+          data:{
+            proyectoDislikeado:project._id,
+            action:'dislike'
+          }
+        })
+        setHasDislikedYet(true)
+        setDislikes(prev=>prev+1);
+        
+      } catch (error) {
+        console.error("Error updating likes:", error);
       }
-    } catch (error) {
-      console.error("Error updating dislikes:", error);
+    }else{
+      try {
+        await axios.patch(`http://192.168.1.35:8004/api/v1/projects/${project._id}/dislikes`,{
+          data:{
+            dislikes:dislikes-1,
+            action:'undislike'
+          }
+        });
+
+        await axios.patch('http://192.168.1.35:8004/api/v1/usuarios/updateMyDislikes',{
+          data:{
+            proyectoLikeado:project._id,
+            action:'undislike'
+          }
+        })
+        setDislikes(prev=>prev-1);
+        setHasDislikedYet(false)
+
+        console.log('-1')
+        
+      } catch (error) {
+        console.error("Error updating likes:", error);
+      }
+ 
     }
+
+    if(hasLikedYet){
+      try {
+        await axios.patch(`http://192.168.1.35:8004/api/v1/projects/${project._id}/likes`,{
+          data:{
+            likes:likes-1,
+            action:'unlike'
+          }
+        });
+
+        await axios.patch('http://192.168.1.35:8004/api/v1/usuarios/updateMyLikes',{
+          data:{
+            proyectoLikeado:project._id,
+            action:'unlike'
+          }
+        })
+        setLikes(prev=>prev-1);
+        setHasLikedYet(false)
+
+        console.log('-1')
+        
+      } catch (error) {
+        console.error("Error updating likes:", error);
+      }
+
+    }
+
+   
   };
+
+  //Volem veure  el project._id esta dins l'array de proyectosLikeados de l'usuari
+ 
+
+  
    
   const handleGoDetailsPage=()=>{
     navigation.navigate('ProjectDetails',{project:project})
@@ -80,13 +202,13 @@ const HomeProject = ({ project,navigation,userInfo }) => {
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6 }}>
           <Text style={{ marginTop: 6, fontSize: 20 }}>{likes}</Text>
           <Pressable onPress={handleLikeButton}>
-            <Icon name="thumb-up" size={30} color={hasLiked ? "green" : "black"} />
+            <Icon name="thumb-up" size={30} color={hasLikedYet ? "green" : "black"} />
           </Pressable>
         </View>
         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6 }}>
           <Text style={{ marginTop: 6, fontSize: 20 }}>{dislikes}</Text>
-          <Pressable onPress={handleDislikeButton}>
-            <Icon name="thumb-down" size={30} color={hasDisliked ? "#FF0000" : "black"} />
+          <Pressable onPress={handleDislikeButton}> 
+            <Icon name="thumb-down" size={30} color={hasDislikedYet ? "#FF0000" : "black"} />
           </Pressable>
         </View>
         <Pressable onPress={handleGoDetailsPage} style={{ backgroundColor: '#6394F2', height: 30, width: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

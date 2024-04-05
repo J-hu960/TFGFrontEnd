@@ -23,7 +23,7 @@ const Home = ({navigation}) => {
    const {getUsuario,userId,userInfo,setUserInfo,loadUser,token} = useAuthContext()
    const { homeProjects,setHomeProjects,loadProjects,isSorting,setIsSorting,setPage,page,categoria,setCategoria,titulo,setTitulo} = useProjectsContext()
    const [orderPopulares,setOrdenarPopulares]=useState(false)
-
+    
 
   useEffect(()=>{
      loadProjects()

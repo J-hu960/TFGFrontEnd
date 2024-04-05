@@ -57,7 +57,7 @@ const NewPost = ({ navigation, route }) => {
           }
         });
       }
-      console.log('Proyecto creado o actualizado');
+      console.log(newProject);
       setNewProject({
         titulo: '',
         descripcion: '',
