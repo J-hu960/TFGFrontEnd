@@ -16,6 +16,7 @@ import UpdatePassword from './screens/UpdatePassword';
 import MyProjects from './screens/MyProjects';
 import ProjectsProvider from './context/ProjectsContext';
 import { ProjectDetails } from './screens/ProjectDetails';
+import ReviewForm from './components/ReviewForm';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -34,6 +35,7 @@ export default function App() {
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
           <Stack.Screen name="RessetPassword" component={ResetPassword} options={{ headerShown: false }} />
           <Stack.Screen name="ProjectDetails" component={ProjectDetails} options={{ headerShown: false }} />
+          <Stack.Screen name="ReviewForm" component={ReviewForm} options={{ headerShown: false }} />
           <Stack.Screen name="Main" component={MainTabs} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>

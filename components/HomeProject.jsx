@@ -187,6 +187,13 @@ const HomeProject = ({ project,navigation,userInfo }) => {
   const handleGoDetailsPage=()=>{
     navigation.navigate('ProjectDetails',{project:project})
   }
+
+  const handleGoAddReviewPage=()=>{
+    navigation.navigate('ReviewForm',{project:project,user:userInfo})
+  }
+  
+
+
   return (
     <View style={styles.project}>
       <View style={{ display: 'flex', flexDirection: 'row', height: 34, width: '100%', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -215,6 +222,10 @@ const HomeProject = ({ project,navigation,userInfo }) => {
           <Text style={{ color: 'white', fontWeight: 'bold' }}>Saber Más</Text>
         </Pressable>
       </View>
+      <Pressable onPress={handleGoAddReviewPage} style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'center',marginTop:6}}>
+      <Text style={{color:'orange'}}>Añadir reseña</Text>
+      </Pressable>
+      
     </View>
   );
 };
@@ -223,12 +234,13 @@ export default HomeProject;
 
 const styles = StyleSheet.create({
   project: {
-    height: 400,
+    height: 'auto',
     marginTop: 6,
     display: 'flex',
     flexDirection: 'column',
     padding: 0,
     margin: 0,
     width: '100%',
+    marginVertical:12
   },
 });
