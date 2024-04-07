@@ -12,7 +12,7 @@ const ProjectsProvider = ({ children }) => {
   const [titulo,setTitulo]=useState("")
 
 
-  const limit = 10
+  const limit = 2
 
 
   const loadProjects = async()=>{
@@ -22,13 +22,13 @@ const ProjectsProvider = ({ children }) => {
       url += `&categoria=${categoria}`;
     }
     if(titulo!==""){
-      url+=`$titulo=${titulo}`
+      url+=`&titulo=${titulo}`
     }
   
     try {
       const response = await axios.get(url);
       setHomeProjects(response.data.projects);
-      console.log(response.data, categoria);
+      console.log(response.data, categoria,titulo);
     } catch (error) {
       console.log(error, categoria);
     }
