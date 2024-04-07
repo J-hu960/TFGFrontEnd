@@ -35,7 +35,7 @@ export default function App() {
           <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
           <Stack.Screen name="RessetPassword" component={ResetPassword} options={{ headerShown: false }} />
           <Stack.Screen name="ProjectDetails" component={ProjectDetails} options={{ headerShown: false }} />
-          <Stack.Screen name="ReviewForm" component={ReviewForm} options={{ headerShown: false }} />
+          <Stack.Screen name="ReviewForm" component={ReviewForm} options={{ headerShown: true }} />
           <Stack.Screen name="Main" component={MainTabs} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>

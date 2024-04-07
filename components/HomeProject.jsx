@@ -238,9 +238,10 @@ const styles = StyleSheet.create({
     marginTop: 6,
     display: 'flex',
     flexDirection: 'column',
-    padding: 0,
+    padding: 5,
     margin: 0,
     width: '100%',
-    marginVertical:12
+    marginVertical:12,
+    backgroundColor:'white'
   },
 });

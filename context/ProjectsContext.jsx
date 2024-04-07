@@ -12,7 +12,7 @@ const ProjectsProvider = ({ children }) => {
   const [titulo,setTitulo]=useState("")
 
 
-  const limit = 5
+  const limit = 10
 
 
   const loadProjects = async()=>{
@@ -45,6 +45,8 @@ const ProjectsProvider = ({ children }) => {
     }  
    }
 
+   
+
   return (
     <ProjectsContext.Provider value={{
       homeProjects,
@@ -58,7 +60,8 @@ const ProjectsProvider = ({ children }) => {
       categoria,
       setCategoria,
       titulo,
-      setTitulo
+      setTitulo,
+      limit
         }}>
       {children}
     </ProjectsContext.Provider>

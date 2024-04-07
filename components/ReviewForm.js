@@ -40,8 +40,7 @@ const ReviewForm = ({ navigation, route }) => {
   return (
     <View style={styles.page}>
          <View style={{width:'100%', display:'flex',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
-        <Icon onPress={()=>navigation.navigate('Main')} name="arrow-left" size={30} color="black" />
-      </View>
+       </View>
       <View style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
         <Text style={{ textAlign: 'center' }}>¡Hola, {user.nombre}!</Text>
         <Text style={{ textAlign: 'center', marginTop: 12, fontSize: 14, fontWeight: 'bold' }}>Con tu comentario puedes ayudar a futuros usuario</Text>

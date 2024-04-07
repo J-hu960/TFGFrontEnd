@@ -21,14 +21,14 @@ import defaultavatar from '../assets/defaultavatar.jpg'
 
 const Home = ({navigation}) => {
    const {getUsuario,userId,userInfo,setUserInfo,loadUser,token} = useAuthContext()
-   const { homeProjects,setHomeProjects,loadProjects,isSorting,setIsSorting,setPage,page,categoria,setCategoria,titulo,setTitulo} = useProjectsContext()
+   const {homeProjects,setHomeProjects,loadProjects,isSorting,setIsSorting,setPage,page,categoria,setCategoria,titulo,setTitulo} = useProjectsContext()
    const [orderPopulares,setOrdenarPopulares]=useState(false)
     
 
   useEffect(()=>{
      loadProjects()
 
-  },[page,categoria])
+  },[page,categoria,titulo])
 
   useEffect(()=>{
    loadUser()
@@ -36,7 +36,7 @@ const Home = ({navigation}) => {
 
 
      const handleVerMas=()=>{
-    
+      if(page*limit>=totals)
       setPage(prevPage=>prevPage+1)
      }
      const handleVerMenos=()=>{
@@ -104,7 +104,7 @@ export default Home
 const styles = StyleSheet.create({
    view:{
       flex:1,
-      padding:10,
+     
       paddingTop:60
 
    },
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
       alignItems:'center',
       justifyContent:'space-between',
       zIndex:50,
+      paddingHorizontal:10
 
    },
    searchQuery:{

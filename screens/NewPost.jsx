@@ -107,7 +107,7 @@ const NewPost = ({ navigation, route }) => {
             />
           </View>
         </View>
-        <Text style={{ marginTop: 16 }}>Descripción:</Text>
+        <Text style={{ marginTop: 10 }}>Descripción:</Text>
         <View style={styles.textAreaContainer}>
           <TextInput
             onChangeText={text => handleInputChange('descripcion', text)}
@@ -157,9 +157,9 @@ const styles = StyleSheet.create({
   page: {
     marginTop: 45,
     paddingHorizontal: 5,
-    height: '100%',
     width: '100%',
-    flex: 1
+    flex: 1,
+    height:'auto'
   },
   inputContainer: {
     width: '100%',
@@ -183,12 +183,14 @@ const styles = StyleSheet.create({
   form: {
     width: '100%',
     display: 'flex',
+    height:'auto',
     flex: 1,
     flexDirection: 'column',
     paddingHorizontal: 10,
-    paddingVertical: 16,
+    paddingBottom: 16,
+    paddingTop:3,
     marginTop: 16,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   textAreaContainer: {
     borderColor: 'gray',
