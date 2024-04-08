@@ -12,7 +12,7 @@ const ProjectsProvider = ({ children }) => {
   const [titulo,setTitulo]=useState("")
 
 
-  const limit = 2
+  const limit = 15
 
 
   const loadProjects = async()=>{
