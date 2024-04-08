@@ -25,7 +25,6 @@ const ReviewForm = ({ navigation, route }) => {
                 data:{
                     descripcion:review.trim(),
                     userid:user._id
-
                 }
                
               });

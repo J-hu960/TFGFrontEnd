@@ -11,29 +11,50 @@ import useProjectsContext from '../hooks/useProjectsContext';
 const NewPost = ({ navigation, route }) => {
   const { userInfo } = useAuthContext()
   const { loadMyProjects, loadProjects } = useProjectsContext()
+  let INITIAL_VALUES; 
 
-  let INITIAL_VALUES
-  if (route.params?.editingProject) {
-    INITIAL_VALUES = JSON.parse(JSON.stringify(route.params.editingProject));
-    console.log('Initial values:', INITIAL_VALUES);
-  } else {
-    INITIAL_VALUES = {
-      titulo: '',
-      descripcion: '',
-      recaudacionEsperada: undefined,
-      categoria: '',
-      recaudacionRecibida: 0,
-      autor: userInfo.nombre,
-      createdAt: undefined,
-      likes: 0,
-      dislikes: 0,
-      fechaLimite: undefined,
-      linkWeb: '',
-      createdBy:userInfo._id
+  const [newProject, setNewProject] = useState( {  titulo: '',
+  descripcion: '',
+  recaudacionEsperada: undefined,
+  categoria: '',
+  recaudacionRecibida: 0,
+  autor: userInfo.nombre,
+  createdAt: undefined,
+  likes: 0,
+  dislikes: 0,
+  fechaLimite: undefined,
+  linkWeb: '',
+  createdBy: userInfo._id})
+
+  if(route.params?.editingProject){ console.log(route.params?.editingProject?._id)}
+   useEffect(() => {
+  
+    if (route.params?.editingProject) {
+      INITIAL_VALUES = JSON.parse(JSON.stringify(route.params.editingProject));
+      setNewProject(INITIAL_VALUES);
+
+      console.log('Initial values:', INITIAL_VALUES);
+    } else {
+      INITIAL_VALUES = {
+        titulo: '',
+        descripcion: '',
+        recaudacionEsperada: undefined,
+        categoria: '',
+        recaudacionRecibida: 0,
+        autor: userInfo.nombre,
+        createdAt: undefined,
+        likes: 0,
+        dislikes: 0,
+        fechaLimite: undefined,
+        linkWeb: '',
+        createdBy: userInfo._id
+      };
+      setNewProject(INITIAL_VALUES);
+
     }
-  }
+  }, [route.params?.editingProject?._id]); // <- array de dependencias vacío para que se ejecute solo una vez al montar el componente
+  
 
-  const [newProject, setNewProject] = useState(INITIAL_VALUES)
 
   const handleInputChange = (key, value) => {
     setNewProject({
