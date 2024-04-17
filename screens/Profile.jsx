@@ -4,18 +4,43 @@ import useAuthContext from '../hooks/useAuthContext'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
 import mockavatar from '../assets/mockavatar.jpeg'
+import * as ImagePicker from 'expo-image-picker';
+
 const Profile = ({navigation}) => {
   const {userId,userInfo,setUserInfo,token,setToken} = useAuthContext()
   const [isEditing,setIsEditing]=useState(false)
+  const [hasPermission, setHasPermission] = useState(null);
+  const [image, setImage] = useState(null);
+
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result.assets[0].uri);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+   
+
   const handleChangeUserInfo=async()=>{
     try {
       await axios.patch('http://192.168.1.35:8004/api/v1/usuarios/updateMe',{
         email:userInfo.email,
         nombre:userInfo.nombre,
-        descripcion:userInfo.descripcion
+        descripcion:userInfo.descripcion,
+        file:image
   
     })
     setIsEditing(false)
+    console.log(image)
     Alert.alert('Usuario Actualizado')
     
 
@@ -26,6 +51,7 @@ const Profile = ({navigation}) => {
     }
   
   }
+
   
 const handleLogOut =async()=>{
   try {
@@ -60,12 +86,13 @@ const handleClickEliminarCuanta=async()=>{
       
       <Image source={mockavatar} style={{ borderRadius: 25, height: 160, width: 180}} />
       {isEditing ? (
-         <Pressable  style={{marginTop:12}}>
+        <>
+         <Pressable onPress={pickImage}  style={{marginTop:12}}>
          <Text style={{textAlign:'center',color:'#225AC8',fontWeight:'semibold'}}>Cambiar foto de perfil</Text>
        </Pressable>
-      ):<>
-       <Pressable onPress={setIsEditing(true)} style={{marginTop:12}}>
-         <Text  style={{textAlign:'center',fontWeight:'semibold'}}>Editar perfil</Text>
+      </>):<>
+       <Pressable onPress={setIsEditing(true)} style={{marginTop:12,color:'black'}}>
+         <Text style={{ textAlign: 'center', fontWeight: 'semibold' }}>Editar perfil</Text>
        </Pressable>
       </>}
     
@@ -163,6 +190,25 @@ const styles = StyleSheet.create({
     alignItems:'flex-start'
   
     
-  }
+  },
+  camera: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    margin: 64,
+  },
+  button: {
+    flex: 1,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+  },
 
 })
