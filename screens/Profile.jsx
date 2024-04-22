@@ -9,12 +9,31 @@ import * as ImagePicker from 'expo-image-picker';
 const Profile = ({navigation}) => {
   const {userId,userInfo,setUserInfo,token,setToken} = useAuthContext()
   const [isEditing,setIsEditing]=useState(false)
-  const [hasPermission, setHasPermission] = useState(null);
-  const [image, setImage] = useState(null);
+  if(userInfo){
+    console.log(userInfo)
+  }
+
+  const handleChangeProfilePicture=async()=>{
+    try {
+      const formData = new FormData()
+      formData.append('photo',{
+        uri: userInfo.photo,
+        type: 'image/jpg', // Cambia el tipo MIME según el tipo de archivo que estés enviando
+        name: 'photo.jpg' // 
+      })
+      await axios.patch('http://192.168.1.35:8004/api/v1/usuarios/upload-photo', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data' // Asegúrate de establecer el tipo de contenido como 'multipart/form-data'
+        }
+      });
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
 
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -25,26 +44,25 @@ const Profile = ({navigation}) => {
     console.log(result.assets[0].uri);
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setUserInfo({
+        ...userInfo,
+       photo: result.assets[0].uri});
     }
+    await handleChangeProfilePicture()
   };
    
 
-  const handleChangeUserInfo=async()=>{
+const handleChangeUserInfo=async()=>{
     try {
       await axios.patch('http://192.168.1.35:8004/api/v1/usuarios/updateMe',{
         email:userInfo.email,
         nombre:userInfo.nombre,
         descripcion:userInfo.descripcion,
-        file:image
-  
     })
     setIsEditing(false)
-    console.log(image)
+    console.log(userInfo.photo)
     Alert.alert('Usuario Actualizado')
-    
-
-      
+        
     } catch (error) {
       console.log(error)
       
@@ -84,7 +102,8 @@ const handleClickEliminarCuanta=async()=>{
        </Pressable>
     </View>
       
-      <Image source={mockavatar} style={{ borderRadius: 25, height: 160, width: 180}} />
+      <Image source={{ uri: userInfo.photo }} style={{ borderRadius: 25, height: 160, width: 180 }} />
+
       {isEditing ? (
         <>
          <Pressable onPress={pickImage}  style={{marginTop:12}}>
