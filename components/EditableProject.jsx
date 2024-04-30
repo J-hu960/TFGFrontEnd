@@ -31,8 +31,7 @@ const EditableProject = ({project,navigation}) => {
     <View style={{width:'100%',maxHeight:'auto',height:170,display:'flex',flexDirection:'column',padding:10,marginBottom:12,alignItems:'center',backgroundColor:'white'}}>
        <View style={{width:'90%',height:'auto',display:'flex',flexDirection:'row',alignItems:'flex-start',justifyContent:'space-between'}}>
           <View style={{width:'60%',display:'flex',flexDirection:'column',height:'100%'}}>
-             <Text style={{fontWeight:'bold',fontSize:18,textDecorationLine:'underline',}}>{project.titulo}</Text>
-             <Text style={{fontSize:12,width:'100%'}}>{project.descripcion}</Text>
+             <Text style={{fontWeight:'medium',fontSize:16, marginTop:24,marginRight:10}}>{project.titulo}</Text>
           </View>
           <Image source={finance} style={{ borderRadius: 5, height: 100, width: '40%' }} />
        </View>

@@ -5,6 +5,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from 'axios';
 import mockavatar from '../assets/mockavatar.jpeg'
 import * as ImagePicker from 'expo-image-picker';
+import {  ref, uploadBytes,getStorage,getDownloadURL  } from "firebase/storage";
+import { storage } from '../firebase';
 
 const Profile = ({navigation}) => {
   const {userId,userInfo,setUserInfo,token,setToken} = useAuthContext()
@@ -48,9 +50,50 @@ const Profile = ({navigation}) => {
         ...userInfo,
        photo: result.assets[0].uri});
     }
-    await handleChangeProfilePicture()
+    //await handleChangeProfilePicture()
   };
-   
+
+  const subirImagenFirebase = async (rutaArchivo, nombreArchivo) => {
+    try {
+      // Crear una referencia al archivo en Firebase Storage
+      const referenciaArchivo = ref(storage, 'fotoPerfiles/' + nombreArchivo);
+  
+      // Subir la imagen como un archivo
+      await uploadBytes(referenciaArchivo, rutaArchivo);
+  
+      console.log('Imagen subida exitosamente a Firebase Storage');
+    } catch (error) {
+      console.error('Error al subir la imagen a Firebase Storage:', error);
+    }
+  };
+
+  const cargarFotoPerfil = async () => {
+    try {
+      const referenciaFotoPerfil = ref(getStorage(), `fotoPerfiles/${userId}.png`);
+
+      //  la URL de descarga de la foto de perfil
+      const urlFotoPerfil = await getDownloadURL(referenciaFotoPerfil);
+
+      // Establecer la URL de la foto de perfil en el estado
+      setUserInfo({
+        ...userInfo,
+        photo:urlFotoPerfil.split('?')[0]
+      });
+    } catch (error) {
+      // Manejar el error en caso de que la foto de perfil no exista o haya algún otro problema
+      console.error('Error al cargar la foto de perfil:', error);
+    }
+  };
+
+  
+
+
+ 
+  useEffect(()=>{
+    cargarFotoPerfil()
+  },[])
+
+
 
 const handleChangeUserInfo=async()=>{
     try {
@@ -62,6 +105,8 @@ const handleChangeUserInfo=async()=>{
     setIsEditing(false)
     console.log(userInfo.photo)
     Alert.alert('Usuario Actualizado')
+    subirImagenFirebase(userInfo.photo,`${userId}${userInfo.photo.split('.')[1]}`)
+
         
     } catch (error) {
       console.log(error)
@@ -102,7 +147,7 @@ const handleClickEliminarCuanta=async()=>{
        </Pressable>
     </View>
       
-      <Image source={{ uri: userInfo.photo }} style={{ borderRadius: 25, height: 160, width: 180 }} />
+      <Image source={{ uri:userInfo.photo}} style={{ borderRadius: 25, height: 160, width: 180 }} />
 
       {isEditing ? (
         <>

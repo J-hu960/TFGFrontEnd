@@ -51,7 +51,7 @@ const Home = ({navigation}) => {
            <CategoriasMenu setFilterByCategory={setCategoria}/>
            <View style={{ flexDirection: 'row',width:'60%', alignItems: 'center', justifyContent:'flex-end',gap:5 }}>
              <Text>Bienvenido! </Text>
-             <Image source={mockavatar} style={{ borderRadius: 25, height: 50, width: 50}} />
+             <Image source={userInfo.photo} style={{ borderRadius: 25, height: 50, width: 50}} />
            </View>
           
         </View>
